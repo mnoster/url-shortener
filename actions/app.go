@@ -11,6 +11,8 @@ import (
 	"github.com/gobuffalo/buffalo/middleware/i18n"
 	"github.com/gobuffalo/packr"
 	"github.com/mnoster/url_shortener/models"
+
+	"github.com/markbates/goth/gothic"
 )
 
 // ENV is used to help switch settings based on where the
@@ -49,6 +51,19 @@ func App() *buffalo.App {
 
 		app.GET("/", HomeHandler)
 
+		// Goth-auth automatically adds in this setup for authentication routes and middleware
+		// We will require the user to be authenticated to view any of the handlers, except the Home Page
+		auth := app.Group("/auth")
+		app.Use(SetCurrentUser)
+		app.Use(Authorize)
+		// Skip athentication check on the Home Page
+		app.Middleware.Skip(Authorize, HomeHandler)
+		bah := buffalo.WrapHandlerFunc(gothic.BeginAuthHandler)
+		auth.GET("/{provider}", bah)
+		auth.DELETE("", AuthDestroy)
+		auth.Middleware.Skip(Authorize, bah, AuthCallback)
+		auth.GET("/{provider}/callback", AuthCallback)
+		app.Resource("/links", LinksResource{})
 		app.ServeFiles("/", assetsBox) // serve files from the public directory
 	}
 

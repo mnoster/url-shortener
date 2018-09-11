@@ -1,0 +1,19 @@
+<div class="page-header">
+  <h1>Link#Show</h1>
+</div>
+
+<ul class="list-unstyled list-inline">
+  <li class="list-inline-item"><a href="<%= linksPath() %>" class="btn btn-info">Back to all Links</a></li>
+  <li class="list-inline-item"><a href="<%= editLinkPath({ link_id: link.ID })%>" class="btn btn-warning">Edit</a></li>
+  <li class="list-inline-item"><a href="<%= linkPath({ link_id: link.ID })%>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+</ul>
+
+<p>
+  <strong>UserID</strong>: <%= link.UserID %>
+</p>
+<p>
+  <strong>Link</strong>: <%= link.Link %>
+</p>
+<p>
+  <strong>Code</strong>: <%= link.Code %>
+</p>
