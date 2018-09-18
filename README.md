@@ -1,7 +1,7 @@
 # url-shortener
 
-#### *WIP*
-
+#### *In Development*
+ 
 
 ## Database Setup
 
